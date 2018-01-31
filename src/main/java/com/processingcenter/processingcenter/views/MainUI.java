@@ -32,6 +32,22 @@ public class MainUI extends UI{
 
     @Autowired
     public MainUI(AccountRepository accountRepository, TransactionRepository transactionRepository) {
+        initViewElements(accountRepository, transactionRepository);
+
+        HorizontalLayout actionsAcc = new HorizontalLayout(filterByLastName, addNewAccountBtn);
+        HorizontalLayout actionsTrx = new HorizontalLayout(fromAccount, toAccount, amount);
+        VerticalLayout accountsWithActions = new VerticalLayout(actionsAcc, accountGrid);
+        VerticalLayout transactionsWithActions = new VerticalLayout(actionsTrx, addNewTransactionBtn, transactionGrid);
+        HorizontalLayout accountsAndTransactions = new HorizontalLayout(accountsWithActions, transactionsWithActions);
+        VerticalLayout mainLayout = new VerticalLayout(title, accountsAndTransactions);
+        setContent(mainLayout);
+
+        listAccounts(null);
+        listTransactions();
+        filterByLastName.setValue(accountRepository.findBalanceByAccId(1L).toString());
+    }
+
+    private void initViewElements(AccountRepository accountRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
         this.accountGrid = new Grid<Account>(Account.class);
@@ -49,18 +65,6 @@ public class MainUI extends UI{
         accountGrid.setColumns("accId", "firstName", "lastName", "balance");
         transactionGrid.setColumns("trxId", "from_id", "to_id", "amount");
         addNewTransactionBtn.addClickListener(x -> addNewTransaction(fromAccount.getValue(), toAccount.getValue(), amount.getValue()));
-
-        HorizontalLayout actionsAcc = new HorizontalLayout(filterByLastName, addNewAccountBtn);
-        HorizontalLayout actionsTrx = new HorizontalLayout(fromAccount, toAccount, amount);
-        VerticalLayout accountsWithActions = new VerticalLayout(actionsAcc, accountGrid);
-        VerticalLayout transactionsWithActions = new VerticalLayout(actionsTrx, addNewTransactionBtn, transactionGrid);
-        HorizontalLayout accountsAndTransactions = new HorizontalLayout(accountsWithActions, transactionsWithActions);
-        VerticalLayout mainLayout = new VerticalLayout(title, accountsAndTransactions);
-        setContent(mainLayout);
-
-        listAccounts(null);
-        listTransactions();
-        filterByLastName.setValue(accountRepository.findBalanceByAccId(1L).toString());
     }
 
     @Override
