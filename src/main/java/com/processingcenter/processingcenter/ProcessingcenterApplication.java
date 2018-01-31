@@ -1,14 +1,11 @@
 package com.processingcenter.processingcenter;
 
-import com.processingcenter.processingcenter.entity.Account;
-import com.processingcenter.processingcenter.entity.Transaction;
 import com.processingcenter.processingcenter.repositories.AccountRepository;
 import com.processingcenter.processingcenter.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,10 +24,10 @@ public class ProcessingcenterApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... strings) throws Exception {
-		accountRepository.save(new Account("Tatyana", "Voteva", 31000));
-		accountRepository.save(new Account("Andrey", "Sokolov", 19000));
-		accountRepository.save(new Account("Gael", "Guedia", 150000));
-		accountRepository.save(new Account("Petr", "Petrov", 4000000));
-		transactionRepository.save(new Transaction(2L, 1L, 1000));
+//		accountRepository.save(new Account("Tatyana", "Voteva", 31000));
+//		accountRepository.save(new Account("Andrey", "Sokolov", 19000));
+//		accountRepository.save(new Account("Gael", "Guedia", 150000));
+//		accountRepository.save(new Account("Petr", "Petrov", 4000000));
+//		transactionRepository.save(new Transaction(2L, 1L, 1000));
 	}
 }

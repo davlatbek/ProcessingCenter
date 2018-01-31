@@ -21,11 +21,18 @@ import javax.sql.DataSource;
 public class AppConfiguration {
     @Bean
     DataSource dataSource() {
+//        BasicDataSource dataSource = new BasicDataSource();
+//        dataSource.setDriverClassName("org.postgresql.Driver");
+//        dataSource.setUrl("jdbc:postgresql://localhost:5432/pcdb");
+//        dataSource.setUsername("postgres");
+//        dataSource.setPassword("1");
+
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/pcdb");
-        dataSource.setUsername("postgres");
-        dataSource.setPassword("1");
+        dataSource.setUrl("jdbc:postgresql://ec2-54-221-198-206.compute-1.amazonaws.com:5432/d7tcr4tgvt55bn?sslmode=require");
+        dataSource.setUsername("ypezsegeltaevt");
+        dataSource.setPassword("9dafd0f66d0d6660eb1fb38c01b239a2486e0ba0e3f7376543379a63d0db0bf8");
+
         return dataSource;
     }
 
