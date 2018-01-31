@@ -6,6 +6,7 @@ import com.processingcenter.processingcenter.repositories.AccountRepository;
 import com.processingcenter.processingcenter.repositories.TransactionRepository;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringUI;
@@ -28,15 +29,24 @@ public class MainUI extends UI{
     TextField fromAccount, toAccount, amount;
 
     @Autowired
-    public MainUI(Component content, AccountRepository accountRepository, TransactionRepository transactionRepository) {
-        super(content);
+    public MainUI(AccountRepository accountRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
+        this.accountGrid = new Grid<Account>(Account.class);
+        this.accountGrid.setCaption("Bank Accounts");
+        this.transactionGrid = new Grid<>(Transaction.class);
+        this.transactionGrid.setCaption("Last Transactions");
+        this.filterByLastName = new TextField();
+        this.addNewAccountBtn = new Button("Add new account", FontAwesome.PLUS);
+        this.addNewTransactionBtn = new Button("Make transfer", FontAwesome.PLUS);
+        this.fromAccount = new TextField();
+        this.toAccount = new TextField();
+        this.amount = new TextField();
     }
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        Label title = new Label("Processing Center");
+        Label title = new Label("PROCESSING CENTER");
         this.fromAccount.setPlaceholder("from account id");
         this.toAccount.setPlaceholder("to account id");
         this.amount.setPlaceholder("amount");
