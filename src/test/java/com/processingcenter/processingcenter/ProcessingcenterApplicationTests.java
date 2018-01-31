@@ -4,6 +4,7 @@ package com.processingcenter.processingcenter;
 import com.processingcenter.processingcenter.config.AppConfiguration;
 import com.processingcenter.processingcenter.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -14,6 +15,7 @@ import org.testng.annotations.Test;
 @WebAppConfiguration
 @ComponentScan
 @ContextConfiguration(classes = AppConfiguration.class)
+@SpringBootTest
 public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContextTests {
 
 	@Autowired
