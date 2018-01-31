@@ -12,6 +12,7 @@ import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 /**
  * Created by davlet on 1/31/18.
@@ -52,5 +53,12 @@ public class MainUI extends UI{
         this.amount.setPlaceholder("amount");
         filterByLastName.setPlaceholder("Filter by last name");
         filterByLastName.setValueChangeMode(ValueChangeMode.LAZY);
+    }
+
+    private void listAccounts(String filter){
+        if (StringUtils.isEmpty(filter))
+            accountGrid.setItems(accountRepository.findAll());
+        else
+            accountGrid.setItems(accountRepository.findAllByLastNameStartsWithIgnoreCase(filter));
     }
 }
