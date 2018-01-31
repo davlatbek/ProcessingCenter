@@ -4,6 +4,7 @@ import com.processingcenter.processingcenter.entity.Account;
 import com.processingcenter.processingcenter.entity.Transaction;
 import com.processingcenter.processingcenter.repositories.AccountRepository;
 import com.processingcenter.processingcenter.repositories.TransactionRepository;
+import com.processingcenter.processingcenter.services.PaymentService;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.FontAwesome;
@@ -29,10 +30,11 @@ public class MainUI extends UI{
     Button addNewAccountBtn, addNewTransactionBtn;
     TextField fromAccount, toAccount, amount;
     Label title;
+    PaymentService paymentService;
 
     @Autowired
-    public MainUI(AccountRepository accountRepository, TransactionRepository transactionRepository) {
-        initViewElements(accountRepository, transactionRepository);
+    public MainUI(AccountRepository accountRepository, TransactionRepository transactionRepository, PaymentService paymentService) {
+        initViewElements(accountRepository, transactionRepository, paymentService);
 
         HorizontalLayout actionsAcc = new HorizontalLayout(filterByLastName, addNewAccountBtn);
         HorizontalLayout actionsTrx = new HorizontalLayout(fromAccount, toAccount, amount);
@@ -44,10 +46,10 @@ public class MainUI extends UI{
 
         listAccounts(null);
         listTransactions();
-        filterByLastName.setValue(accountRepository.findBalanceByAccId(1L).toString());
     }
 
-    private void initViewElements(AccountRepository accountRepository, TransactionRepository transactionRepository) {
+    private void initViewElements(AccountRepository accountRepository, TransactionRepository transactionRepository, PaymentService paymentService) {
+        this.paymentService = paymentService;
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
         this.accountGrid = new Grid<Account>(Account.class);
@@ -84,16 +86,22 @@ public class MainUI extends UI{
             accountGrid.setItems(accountRepository.findAllByLastNameStartsWithIgnoreCase(filter));
     }
 
-    private void addNewTransaction(String fromid, String toid, String amountOfMoney) {
-        transactionRepository.save(new Transaction(Long.parseLong(fromid), Long.parseLong(toid), Integer.parseInt(amountOfMoney)));
-        listTransactions();
-        fromAccount.clear();
-        toAccount.clear();
-        amount.clear();
-        Notification.show("Transaction succeed");
-    }
-
     private void listTransactions(){
         transactionGrid.setItems(transactionRepository.findAll());
+    }
+
+    private void addNewTransaction(String fromid, String toid, String amountOfMoney) {
+        Boolean paymentMade = paymentService.makePayment(Long.parseLong(fromid), Long.parseLong(toid), Integer.parseInt(amountOfMoney));
+        if (paymentMade) {
+            listTransactions();
+            listAccounts(null);
+            fromAccount.clear();
+            toAccount.clear();
+            amount.clear();
+            Notification.show("Transaction succeed! Transferred " + amountOfMoney + " from id " + fromid + " to id " + toid + "!", Notification.Type.HUMANIZED_MESSAGE);
+        } else {
+            Notification.show("Transaction failed! Insufficient funds on balance of account with id = " + fromid + "!", Notification.Type.ERROR_MESSAGE);
+        }
+
     }
 }
