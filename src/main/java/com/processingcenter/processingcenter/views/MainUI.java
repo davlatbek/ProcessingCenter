@@ -62,6 +62,15 @@ public class MainUI extends UI{
             accountGrid.setItems(accountRepository.findAllByLastNameStartsWithIgnoreCase(filter));
     }
 
+    private void addNewTransaction(String fromid, String toid, String amountOfMoney) {
+        transactionRepository.save(new Transaction(Long.parseLong(fromid), Long.parseLong(toid), Integer.parseInt(amountOfMoney)));
+        listTransactions();
+        fromAccount.clear();
+        toAccount.clear();
+        amount.clear();
+        Notification.show("Transaction succeed");
+    }
+
     private void listTransactions(){
         transactionGrid.setItems(transactionRepository.findAll());
     }
