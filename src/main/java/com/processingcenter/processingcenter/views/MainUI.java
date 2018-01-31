@@ -61,4 +61,8 @@ public class MainUI extends UI{
         else
             accountGrid.setItems(accountRepository.findAllByLastNameStartsWithIgnoreCase(filter));
     }
+
+    private void listTransactions(){
+        transactionGrid.setItems(transactionRepository.findAll());
+    }
 }
