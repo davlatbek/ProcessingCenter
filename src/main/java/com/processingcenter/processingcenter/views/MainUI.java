@@ -28,6 +28,7 @@ public class MainUI extends UI{
     TextField filterByLastName;
     Button addNewAccountBtn, addNewTransactionBtn;
     TextField fromAccount, toAccount, amount;
+    Label title;
 
     @Autowired
     public MainUI(AccountRepository accountRepository, TransactionRepository transactionRepository) {
@@ -43,6 +44,23 @@ public class MainUI extends UI{
         this.fromAccount = new TextField();
         this.toAccount = new TextField();
         this.amount = new TextField();
+        this.title = new Label("PROCESSING CENTER");
+        filterByLastName.addValueChangeListener(x -> listAccounts(x.getValue()));
+        accountGrid.setColumns("accId", "firstName", "lastName", "balance");
+        transactionGrid.setColumns("trxId", "from_id", "to_id", "amount");
+        addNewTransactionBtn.addClickListener(x -> addNewTransaction(fromAccount.getValue(), toAccount.getValue(), amount.getValue()));
+
+        HorizontalLayout actionsAcc = new HorizontalLayout(filterByLastName, addNewAccountBtn);
+        HorizontalLayout actionsTrx = new HorizontalLayout(fromAccount, toAccount, amount);
+        VerticalLayout accountsWithActions = new VerticalLayout(actionsAcc, accountGrid);
+        VerticalLayout transactionsWithActions = new VerticalLayout(actionsTrx, addNewTransactionBtn, transactionGrid);
+        HorizontalLayout accountsAndTransactions = new HorizontalLayout(accountsWithActions, transactionsWithActions);
+        VerticalLayout mainLayout = new VerticalLayout(title, accountsAndTransactions);
+        setContent(mainLayout);
+
+        listAccounts(null);
+        listTransactions();
+        filterByLastName.setValue(accountRepository.findBalanceByAccId(1L).toString());
     }
 
     @Override
