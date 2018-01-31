@@ -13,5 +13,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     List<Account> findAll();
     List<Account> findAllByLastNameStartsWithIgnoreCase(String lastName);
     Account findByLastName(String lastName);
-    Account findBalanceByAccId(Long id);
+    Integer findBalanceByAccId(Long id);
+    Account findByAccId(Long id);
 }
