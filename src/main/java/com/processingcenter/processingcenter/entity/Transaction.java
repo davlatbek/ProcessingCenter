@@ -25,7 +25,7 @@ public class Transaction {
     }
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     public Long getTrxId() {
         return trxId;
     }
