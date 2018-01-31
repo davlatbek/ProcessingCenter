@@ -29,9 +29,9 @@ public class AppConfiguration {
 
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://ec2-54-221-198-206.compute-1.amazonaws.com:5432/d7tcr4tgvt55bn?sslmode=require");
-        dataSource.setUsername("ypezsegeltaevt");
-        dataSource.setPassword("9dafd0f66d0d6660eb1fb38c01b239a2486e0ba0e3f7376543379a63d0db0bf8");
+        dataSource.setUrl("jdbc:postgresql://ec2-23-23-92-179.compute-1.amazonaws.com:5432/d1ub4mtsogjkac?sslmode=require");
+        dataSource.setUsername("nanvkhyttqqhrx");
+        dataSource.setPassword("5c3b598b8dff2061d9a497e71294e5c572ef72203e14d8dc8d129da898ee88ac");
 
         return dataSource;
     }
