@@ -52,7 +52,7 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
 	public void setup() {
 		dataSource = new BasicDataSource();
 		dataSource.setDriverClassName("org.postgresql.Driver");
-		dataSource.setUrl("jdbc:postgresql://localhost:5432/pcdb");
+		dataSource.setUrl("jdbc:postgresql://localhost:5432/pcdbtest");
 		dataSource.setUsername("postgres");
 		dataSource.setPassword("1");
 	}
@@ -84,7 +84,22 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
 
 	@Test
 	public void accountDeleteTest(){
+        Long idToDelete = 4L;
+		int numberOfRowsInTable = JdbcTestUtils.countRowsInTableWhere(new JdbcTemplate(dataSource),
+				"account" , null);
 
+		//before deleting, let's check if account of id = 1 present in db table
+		Account accountId1 = accountRepository.findByAccId(idToDelete);
+		Assert.assertEquals(idToDelete, accountId1.getAccId());
+
+		//create first and second account and check if they are added
+		account1 = accountRepository.findByAccId(idToDelete);
+		accountRepository.delete(account1);
+		Account deletedAccount = accountRepository.findByAccId(idToDelete);
+
+		//check if we actually deleted account with given id
+		Assert.assertNull(deletedAccount);
+		Assert.assertEquals(numberOfRowsInTable - 1, accountRepository.findAll().size());
 	}
 
 	@Test
