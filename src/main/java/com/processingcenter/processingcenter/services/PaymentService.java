@@ -65,4 +65,12 @@ public class PaymentService {
         }
         return false;
     }
+
+    public void setAccountRepository(AccountRepository accountRep) {
+        this.accountRepository = accountRep;
+    }
+
+    public void setTransactionRepository(TransactionRepository transactionRepository){
+        this.transactionRepository = transactionRepository;
+    }
 }
