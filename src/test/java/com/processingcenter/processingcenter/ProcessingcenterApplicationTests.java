@@ -139,19 +139,4 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
         Assert.assertEquals((int)accountRepository.findByAccId(userid1).getBalance(), 1000);
         Assert.assertEquals((int)accountRepository.findByAccId(userid1).getBalance(), 1000);
 	}
-
-	@AfterMethod
-	public void afterMethod(){
-
-    }
-
-	@AfterTest
-    public void afterTest(){
-	    paymentService = null;
-	    account1 = null;
-	    account2 = null;
-	    dataSource = null;
-	    accountRepository = null;
-	    transactionRepository = null;
-    }
 }
