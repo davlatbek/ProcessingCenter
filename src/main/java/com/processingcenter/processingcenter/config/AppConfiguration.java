@@ -18,6 +18,7 @@ import javax.sql.DataSource;
 
 /**
  * Created by davlet on 1/31/18.
+ *
  */
 @Configuration
 @EnableWebMvc
@@ -27,7 +28,7 @@ public class AppConfiguration extends WebMvcConfigurerAdapter{
     DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/pcdb");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/pcdbtest");
         dataSource.setUsername("postgres");
         dataSource.setPassword("1");
 
@@ -49,7 +50,7 @@ public class AppConfiguration extends WebMvcConfigurerAdapter{
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("com.processingcenter.processingcenter.entity");
+        factory.setPackagesToScan("com.processingcenter.processingcenter.entity", "com.processingcenter.processingcenter.services");
         factory.setDataSource(dataSource());
         factory.afterPropertiesSet();
 
