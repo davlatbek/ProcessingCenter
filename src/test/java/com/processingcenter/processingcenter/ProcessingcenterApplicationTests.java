@@ -4,6 +4,7 @@ import com.processingcenter.processingcenter.config.AppConfiguration;
 import com.processingcenter.processingcenter.entity.Account;
 import com.processingcenter.processingcenter.repositories.AccountRepository;
 import com.processingcenter.processingcenter.repositories.TransactionRepository;
+import com.processingcenter.processingcenter.services.PaymentService;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,11 +15,9 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.testng.Assert;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 @WebAppConfiguration
 @ContextConfiguration(classes = AppConfiguration.class)
@@ -36,61 +35,64 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
 
 	private BasicDataSource dataSource;
 
-	@Autowired
-	WebApplicationContext context;
-
 	public static final String USERNAME1 = "Vladimir";
 	public static final String USERLASTNAME1 = "Ivanov";
 	public static final String USERNAME2 = "Ekaterina";
 	public static final String USERLASTNAME2 = "Popova";
-	public static final Long ACCOUNT_ID1 = 1000L;
-	public static final Long ACCOUNT_ID2 = 1001L;
 	public Account account1;
 	public Account account2;
 
+	PaymentService paymentService;
+
 	@BeforeTest
-	public void setup() {
+	public void beforeTest() {
 		dataSource = new BasicDataSource();
 		dataSource.setDriverClassName("org.postgresql.Driver");
 		dataSource.setUrl("jdbc:postgresql://localhost:5432/pcdbtest");
 		dataSource.setUsername("postgres");
 		dataSource.setPassword("1");
+		paymentService = new PaymentService();
 	}
+
+	@BeforeMethod
+	public void beforeMethod(){
+        paymentService.setAccountRepository(this.accountRepository);
+        paymentService.setTransactionRepository(this.transactionRepository);
+    }
 
 	@Test
 	public void addAccountTest() {
 
-		//first delete if exists
-		JdbcTestUtils.deleteFromTableWhere(new JdbcTemplate(dataSource),
-				"account",
-				"accid in(?, ?)",
-				ACCOUNT_ID1,
-				ACCOUNT_ID2);
-		Assert.assertEquals(0,
-				JdbcTestUtils.countRowsInTableWhere(new JdbcTemplate(dataSource),
-				"account", "accid in('" + ACCOUNT_ID1 + "', '" + ACCOUNT_ID2 + "')"));
-
 		int numberOfRowsInTable = JdbcTestUtils.countRowsInTableWhere(new JdbcTemplate(dataSource),
 				"account" , null);
 
-		//create first and second account and check if they are added
+		//create account and check if they are added
 		account1 = new Account(USERNAME1, USERLASTNAME1, 1000);
-		account2 = new Account(USERNAME2, USERLASTNAME2, 2000);
-		accountRepository.save(account1);
-		accountRepository.save(account2);
+		Long id1 = accountRepository.save(account1).getAccId();
+		Account addedAccount = accountRepository.findByAccId(id1);
 
-		Assert.assertEquals(numberOfRowsInTable + 2, accountRepository.findAll().size());
+		//check if newly added accounts present in db table
+        Assert.assertEquals(account1.getFirstName(), addedAccount.getFirstName());
+        Assert.assertEquals(account1.getLastName(), addedAccount.getLastName());
+        Assert.assertEquals(account1.getBalance(), addedAccount.getBalance());
+
+		//check if after adding number of records are increased by two
+		Assert.assertEquals(numberOfRowsInTable + 1, accountRepository.findAll().size());
 	}
 
 	@Test
 	public void accountDeleteTest(){
-        Long idToDelete = 4L;
+
+        //create two new users and save them to db
+        account1 = new Account(USERNAME1, USERLASTNAME1, 1000);
+
+        Long idToDelete = accountRepository.save(account1).getAccId();
 		int numberOfRowsInTable = JdbcTestUtils.countRowsInTableWhere(new JdbcTemplate(dataSource),
 				"account" , null);
 
 		//before deleting, let's check if account of id = 1 present in db table
-		Account accountId1 = accountRepository.findByAccId(idToDelete);
-		Assert.assertEquals(idToDelete, accountId1.getAccId());
+		Account accountIdToDelete = accountRepository.findByAccId(idToDelete);
+		Assert.assertEquals(idToDelete, accountIdToDelete.getAccId());
 
 		//create first and second account and check if they are added
 		account1 = accountRepository.findByAccId(idToDelete);
@@ -105,10 +107,51 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
 	@Test
 	public void paymentWithSufficientFundsAccountTest(){
 
+        //create two new users and save them to db
+        account1 = new Account(USERNAME1, USERLASTNAME1, 1000);
+        account2 = new Account(USERNAME2, USERLASTNAME2, 1000);
+
+        Long userid1 = accountRepository.save(account1).getAccId();
+        Long userid2 = accountRepository.save(account2).getAccId();
+
+        //transfer all money user1 has in account
+        paymentService.makePayment(userid1, userid2, accountRepository.findByAccId(userid1).getBalance());
+
+        //check if balance of user1 in db  equals 0 now
+        Assert.assertEquals((int)accountRepository.findByAccId(userid1).getBalance(), 0);
+        Assert.assertEquals((int)accountRepository.findByAccId(userid2).getBalance(), 2000);
 	}
 
 	@Test
 	public void paymentWithInsuffiecientFundsAccountTest(){
 
+        //create two new users and save them to db
+        account1 = new Account(USERNAME1, USERLASTNAME1, 1000);
+        account2 = new Account(USERNAME2, USERLASTNAME2, 1000);
+
+        Long userid1 = accountRepository.save(account1).getAccId();
+        Long userid2 = accountRepository.save(account2).getAccId();
+
+        //transfer more money than user1 has in account
+        paymentService.makePayment(userid1, userid2, accountRepository.findByAccId(userid1).getBalance() + 1);
+
+        //check if balances of both account are the same as before
+        Assert.assertEquals((int)accountRepository.findByAccId(userid1).getBalance(), 1000);
+        Assert.assertEquals((int)accountRepository.findByAccId(userid1).getBalance(), 1000);
 	}
+
+	@AfterMethod
+	public void afterMethod(){
+
+    }
+
+	@AfterTest
+    public void afterTest(){
+	    paymentService = null;
+	    account1 = null;
+	    account2 = null;
+	    dataSource = null;
+	    accountRepository = null;
+	    transactionRepository = null;
+    }
 }
