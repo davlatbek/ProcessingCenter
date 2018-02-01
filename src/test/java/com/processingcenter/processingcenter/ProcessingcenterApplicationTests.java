@@ -9,15 +9,15 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 
 @WebAppConfiguration
 @ContextConfiguration(classes = AppConfiguration.class)
@@ -63,21 +63,13 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
 	@Test
 	public void addAccountTest() {
 
-		int numberOfRowsInTable = JdbcTestUtils.countRowsInTableWhere(new JdbcTemplate(dataSource),
-				"account" , null);
-
 		//create account and check if they are added
 		account1 = new Account(USERNAME1, USERLASTNAME1, 1000);
 		Long id1 = accountRepository.save(account1).getAccId();
 		Account addedAccount = accountRepository.findByAccId(id1);
 
 		//check if newly added accounts present in db table
-        Assert.assertEquals(account1.getFirstName(), addedAccount.getFirstName());
-        Assert.assertEquals(account1.getLastName(), addedAccount.getLastName());
-        Assert.assertEquals(account1.getBalance(), addedAccount.getBalance());
-
-		//check if after adding number of records are increased by two
-		Assert.assertEquals(numberOfRowsInTable + 1, accountRepository.findAll().size());
+        Assert.assertEquals(account1, addedAccount);
 	}
 
 	@Test
@@ -85,10 +77,7 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
 
         //create two new users and save them to db
         account1 = new Account(USERNAME1, USERLASTNAME1, 1000);
-
         Long idToDelete = accountRepository.save(account1).getAccId();
-		int numberOfRowsInTable = JdbcTestUtils.countRowsInTableWhere(new JdbcTemplate(dataSource),
-				"account" , null);
 
 		//before deleting, let's check if account of id = 1 present in db table
 		Account accountIdToDelete = accountRepository.findByAccId(idToDelete);
@@ -101,7 +90,6 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
 
 		//check if we actually deleted account with given id
 		Assert.assertNull(deletedAccount);
-		Assert.assertEquals(numberOfRowsInTable - 1, accountRepository.findAll().size());
 	}
 
 	@Test
@@ -137,6 +125,6 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
 
         //check if balances of both account are the same as before
         Assert.assertEquals((int)accountRepository.findByAccId(userid1).getBalance(), 1000);
-        Assert.assertEquals((int)accountRepository.findByAccId(userid1).getBalance(), 1000);
+        Assert.assertEquals((int)accountRepository.findByAccId(userid2).getBalance(), 1000);
 	}
 }
