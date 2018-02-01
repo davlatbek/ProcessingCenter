@@ -48,10 +48,11 @@ public class MainUI extends UI{
         accountGrid.addComponentColumn(this::buildDeleteButton).setCaption("Delete");
         accountGrid.addComponentColumn(this::buildShowBalanceButton).setCaption("Balance");
 
-//        accountGrid.setWidth(800, Unit.PIXELS);
+        accountGrid.setWidth(700, Unit.PIXELS);
         HorizontalLayout actionsAcc = new HorizontalLayout(filterByLastName, addNewAccountBtn);
         VerticalLayout accountsWithActions = new VerticalLayout(actionsAcc, accountGrid);
         HorizontalLayout accountsAll = new HorizontalLayout(accountsWithActions, accoundAdd);
+
 
         transactionGrid.setWidth(70, Unit.PERCENTAGE);
         HorizontalLayout actionsTrx = new HorizontalLayout(fromAccount, toAccount, amount, addNewTransactionBtn);
@@ -76,6 +77,8 @@ public class MainUI extends UI{
         this.filterByLastName = new TextField();
         this.addNewAccountBtn = new Button("Add new account", FontAwesome.PLUS);
         this.addNewTransactionBtn = new Button("Make transfer", FontAwesome.PLUS);
+        this.addNewAccountBtn.setStyleName(ValoTheme.BUTTON_PRIMARY);
+        this.addNewTransactionBtn.setStyleName(ValoTheme.BUTTON_PRIMARY);
         this.fromAccount = new TextField();
         this.toAccount = new TextField();
         this.amount = new TextField();
@@ -95,32 +98,35 @@ public class MainUI extends UI{
     }
 
     private Button buildTopupButton(Account ac){
-        Button button = new Button(VaadinIcons.PLUS);
-        button.addStyleName(ValoTheme.BUTTON_SMALL);
+        Button button = new Button(VaadinIcons.PLUS_CIRCLE_O);
+        button.addStyleName(ValoTheme.BUTTON_FRIENDLY);
         button.addClickListener(e -> accountRepository.save(ac));
-        listAccounts(null);
         return button;
     }
 
     private Button buildWithdrawButton(Account ac){
-        Button button = new Button(VaadinIcons.MINUS);
-        button.addStyleName(ValoTheme.BUTTON_SMALL);
+        Button button = new Button(VaadinIcons.MINUS_CIRCLE);
+        button.addStyleName(ValoTheme.BUTTON_FRIENDLY);
         button.addClickListener(e -> accountRepository.save(ac));
-        listAccounts(null);
         return button;
     }
 
     private Button buildDeleteButton(Account ac){
         Button button = new Button(VaadinIcons.TRASH);
         button.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        button.addClickListener(e -> accountRepository.delete(ac));
-        listAccounts(null);
+        button.addClickListener(e -> deleteButton(ac));
         return button;
+    }
+
+    private void deleteButton(Account account){
+        accountRepository.delete(account);
+        Notification.show("Deleted account with id = " + account.getAccId(), Notification.Type.HUMANIZED_MESSAGE);
+        listAccounts(null);
     }
 
     private Button buildShowBalanceButton(Account account){
         Button button = new Button(VaadinIcons.INFO);
-        button.addStyleName(ValoTheme.BUTTON_SMALL);
+        button.addStyleName(ValoTheme.BUTTON_FRIENDLY);
         button.addClickListener(e -> Notification.show("Balance on this account equals = " + account.getBalance().toString(), Notification.Type.HUMANIZED_MESSAGE));
         return button;
     }

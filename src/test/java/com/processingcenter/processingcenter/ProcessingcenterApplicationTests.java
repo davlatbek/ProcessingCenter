@@ -48,7 +48,7 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
 	public void beforeTest() {
 		dataSource = new BasicDataSource();
 		dataSource.setDriverClassName("org.postgresql.Driver");
-		dataSource.setUrl("jdbc:postgresql://localhost:5432/pcdbtest");
+		dataSource.setUrl("jdbc:postgresql://localhost:5432/pcdb");
 		dataSource.setUsername("postgres");
 		dataSource.setPassword("1");
 		paymentService = new PaymentService();
