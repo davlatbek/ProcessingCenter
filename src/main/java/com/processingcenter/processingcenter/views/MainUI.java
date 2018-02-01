@@ -25,7 +25,7 @@ import org.springframework.util.StringUtils;
 @SpringUI
 @Theme("valo")
 @EnableTransactionManagement
-public class MainUI extends UI{
+public class MainUI extends UI implements AccountTopupWithdraw.ClickUpdate{
     public Navigator navigator;
     AccountRepository accountRepository;
     Grid<Account> accountGrid;
@@ -37,11 +37,14 @@ public class MainUI extends UI{
     Label title;
     PaymentService paymentService;
     AccoundAdd accoundAdd;
+    AccountTopupWithdraw accountTopupWithdraw;
 
     @Autowired
-    public MainUI(AccountRepository accountRepository, TransactionRepository transactionRepository, PaymentService paymentService, AccoundAdd accoundAdd) {
+    public MainUI(AccountRepository accountRepository, TransactionRepository transactionRepository, PaymentService paymentService, AccoundAdd accoundAdd, AccountTopupWithdraw accountTopupWithdraw) {
         initViewElements(accountRepository, transactionRepository, paymentService);
         this.accoundAdd = accoundAdd;
+        this.accountTopupWithdraw = accountTopupWithdraw;
+        this.accountTopupWithdraw.setClickUpdate(this);
 
         accountGrid.addComponentColumn(this::buildTopupButton).setCaption("Topup");
         accountGrid.addComponentColumn(this::buildWithdrawButton).setCaption("Withdraw");
@@ -51,7 +54,7 @@ public class MainUI extends UI{
         accountGrid.setWidth(700, Unit.PIXELS);
         HorizontalLayout actionsAcc = new HorizontalLayout(filterByLastName, addNewAccountBtn);
         VerticalLayout accountsWithActions = new VerticalLayout(actionsAcc, accountGrid);
-        HorizontalLayout accountsAll = new HorizontalLayout(accountsWithActions, accoundAdd);
+        HorizontalLayout accountsAll = new HorizontalLayout(accountsWithActions, accoundAdd, accountTopupWithdraw);
 
 
         transactionGrid.setWidth(70, Unit.PERCENTAGE);
@@ -92,28 +95,32 @@ public class MainUI extends UI{
         Label title = new Label("PROCESSING CENTER");
         this.fromAccount.setPlaceholder("from account id");
         this.toAccount.setPlaceholder("to account id");
-        this.amount.setPlaceholder("amount");
+        this.amount.setPlaceholder("amountField");
         filterByLastName.setPlaceholder("Filter by last name");
         filterByLastName.setValueChangeMode(ValueChangeMode.LAZY);
     }
 
     private Button buildTopupButton(Account ac){
         Button button = new Button(VaadinIcons.PLUS_CIRCLE_O);
-        button.addStyleName(ValoTheme.BUTTON_FRIENDLY);
-        button.addClickListener(e -> accountRepository.save(ac));
+        button.addStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
+        button.addClickListener(e -> topUpButtonHandle(ac));
         return button;
+    }
+
+    private void topUpButtonHandle(Account account){
+        accountTopupWithdraw.enable(account);
     }
 
     private Button buildWithdrawButton(Account ac){
         Button button = new Button(VaadinIcons.MINUS_CIRCLE);
-        button.addStyleName(ValoTheme.BUTTON_FRIENDLY);
+        button.addStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
         button.addClickListener(e -> accountRepository.save(ac));
         return button;
     }
 
     private Button buildDeleteButton(Account ac){
         Button button = new Button(VaadinIcons.TRASH);
-        button.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        button.addStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
         button.addClickListener(e -> deleteButton(ac));
         return button;
     }
@@ -126,7 +133,7 @@ public class MainUI extends UI{
 
     private Button buildShowBalanceButton(Account account){
         Button button = new Button(VaadinIcons.INFO);
-        button.addStyleName(ValoTheme.BUTTON_FRIENDLY);
+        button.addStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
         button.addClickListener(e -> Notification.show("Balance on this account equals = " + account.getBalance().toString(), Notification.Type.HUMANIZED_MESSAGE));
         return button;
     }
@@ -164,5 +171,10 @@ public class MainUI extends UI{
             Notification.show("Transaction failed! Insufficient funds on balance of account with id = " + fromid + "!", Notification.Type.ERROR_MESSAGE);
         }
 
+    }
+
+    @Override
+    public void updategrid() {
+        listAccounts(null);
     }
 }

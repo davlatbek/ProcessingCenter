@@ -68,5 +68,27 @@ public class Account {
                 ", balance=" + balance +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Account account = (Account) o;
+
+        if (!getAccId().equals(account.getAccId())) return false;
+        if (!getFirstName().equals(account.getFirstName())) return false;
+        if (!getLastName().equals(account.getLastName())) return false;
+        return getBalance().equals(account.getBalance());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getAccId().hashCode();
+        result = 31 * result + getFirstName().hashCode();
+        result = 31 * result + getLastName().hashCode();
+        result = 31 * result + getBalance().hashCode();
+        return result;
+    }
 }
 
