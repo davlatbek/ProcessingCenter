@@ -6,13 +6,17 @@ import com.processingcenter.processingcenter.repositories.AccountRepository;
 import com.processingcenter.processingcenter.repositories.TransactionRepository;
 import com.processingcenter.processingcenter.services.PaymentService;
 import com.vaadin.annotations.Theme;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 /**
@@ -20,6 +24,7 @@ import org.springframework.util.StringUtils;
  */
 @SpringUI
 @Theme("valo")
+@EnableTransactionManagement
 public class MainUI extends UI{
     public Navigator navigator;
     AccountRepository accountRepository;
@@ -31,23 +36,35 @@ public class MainUI extends UI{
     TextField fromAccount, toAccount, amount;
     Label title;
     PaymentService paymentService;
+    AccoundAdd accoundAdd;
 
     @Autowired
-    public MainUI(AccountRepository accountRepository, TransactionRepository transactionRepository, PaymentService paymentService) {
+    public MainUI(AccountRepository accountRepository, TransactionRepository transactionRepository, PaymentService paymentService, AccoundAdd accoundAdd) {
         initViewElements(accountRepository, transactionRepository, paymentService);
+        this.accoundAdd = accoundAdd;
 
+        accountGrid.addComponentColumn(this::buildTopupButton).setCaption("Topup");
+        accountGrid.addComponentColumn(this::buildWithdrawButton).setCaption("Withdraw");
+        accountGrid.addComponentColumn(this::buildDeleteButton).setCaption("Delete");
+        accountGrid.addComponentColumn(this::buildShowBalanceButton).setCaption("Balance");
+
+//        accountGrid.setWidth(800, Unit.PIXELS);
         HorizontalLayout actionsAcc = new HorizontalLayout(filterByLastName, addNewAccountBtn);
-        HorizontalLayout actionsTrx = new HorizontalLayout(fromAccount, toAccount, amount);
         VerticalLayout accountsWithActions = new VerticalLayout(actionsAcc, accountGrid);
-        VerticalLayout transactionsWithActions = new VerticalLayout(actionsTrx, addNewTransactionBtn, transactionGrid);
-        HorizontalLayout accountsAndTransactions = new HorizontalLayout(accountsWithActions, transactionsWithActions);
-        VerticalLayout mainLayout = new VerticalLayout(title, accountsAndTransactions);
+        HorizontalLayout accountsAll = new HorizontalLayout(accountsWithActions, accoundAdd);
+
+        transactionGrid.setWidth(70, Unit.PERCENTAGE);
+        HorizontalLayout actionsTrx = new HorizontalLayout(fromAccount, toAccount, amount, addNewTransactionBtn);
+        VerticalLayout transactionsWithActions = new VerticalLayout(actionsTrx, transactionGrid);
+
+        VerticalLayout mainLayout = new VerticalLayout(title, accountsAll, transactionsWithActions);
         setContent(mainLayout);
 
         listAccounts(null);
         listTransactions();
     }
 
+    @Transactional
     private void initViewElements(AccountRepository accountRepository, TransactionRepository transactionRepository, PaymentService paymentService) {
         this.paymentService = paymentService;
         this.accountRepository = accountRepository;
@@ -64,19 +81,52 @@ public class MainUI extends UI{
         this.amount = new TextField();
         this.title = new Label("PROCESSING CENTER");
         filterByLastName.addValueChangeListener(x -> listAccounts(x.getValue()));
-        accountGrid.setColumns("accId", "firstName", "lastName", "balance");
+        accountGrid.setColumns("accId", "firstName", "lastName");
         transactionGrid.setColumns("trxId", "from_id", "to_id", "amount");
         addNewTransactionBtn.addClickListener(x -> addNewTransaction(fromAccount.getValue(), toAccount.getValue(), amount.getValue()));
-    }
+        addNewAccountBtn.addClickListener(x -> accoundAdd.editAccount(new Account("", "", 0)));
 
-    @Override
-    protected void init(VaadinRequest vaadinRequest) {
         Label title = new Label("PROCESSING CENTER");
         this.fromAccount.setPlaceholder("from account id");
         this.toAccount.setPlaceholder("to account id");
         this.amount.setPlaceholder("amount");
         filterByLastName.setPlaceholder("Filter by last name");
         filterByLastName.setValueChangeMode(ValueChangeMode.LAZY);
+    }
+
+    private Button buildTopupButton(Account ac){
+        Button button = new Button(VaadinIcons.PLUS);
+        button.addStyleName(ValoTheme.BUTTON_SMALL);
+        button.addClickListener(e -> accountRepository.save(ac));
+        listAccounts(null);
+        return button;
+    }
+
+    private Button buildWithdrawButton(Account ac){
+        Button button = new Button(VaadinIcons.MINUS);
+        button.addStyleName(ValoTheme.BUTTON_SMALL);
+        button.addClickListener(e -> accountRepository.save(ac));
+        listAccounts(null);
+        return button;
+    }
+
+    private Button buildDeleteButton(Account ac){
+        Button button = new Button(VaadinIcons.TRASH);
+        button.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        button.addClickListener(e -> accountRepository.delete(ac));
+        listAccounts(null);
+        return button;
+    }
+
+    private Button buildShowBalanceButton(Account account){
+        Button button = new Button(VaadinIcons.INFO);
+        button.addStyleName(ValoTheme.BUTTON_SMALL);
+        button.addClickListener(e -> Notification.show("Balance on this account equals = " + account.getBalance().toString(), Notification.Type.HUMANIZED_MESSAGE));
+        return button;
+    }
+
+    @Override
+    protected void init(VaadinRequest vaadinRequest) {
     }
 
     private void listAccounts(String filter){
@@ -91,6 +141,11 @@ public class MainUI extends UI{
     }
 
     private void addNewTransaction(String fromid, String toid, String amountOfMoney) {
+        if (fromid.equals("") || toid.equals("") || amountOfMoney.equals("") || Integer.parseInt(amountOfMoney) <= 0){
+            Notification.show("Fill the transaction form properly!", Notification.Type.ERROR_MESSAGE);
+            return;
+        }
+
         Boolean paymentMade = paymentService.makePayment(Long.parseLong(fromid), Long.parseLong(toid), Integer.parseInt(amountOfMoney));
         if (paymentMade) {
             listTransactions();
