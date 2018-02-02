@@ -23,3 +23,6 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+/target/surefire-reports/
+src/main/resources/static/
+src/main/resources/templates/
