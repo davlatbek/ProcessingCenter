@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @SpringComponent
 @UIScope
-public class AccountTopupWithdraw extends VerticalLayout {
+public class AccountTopup extends VerticalLayout {
     private final AccountRepository accountRepository;
 
     TextField amountField;
@@ -21,15 +21,14 @@ public class AccountTopupWithdraw extends VerticalLayout {
     Button cancelOperationButton;
     CssLayout buttons;
     Account account;
+    UpdateList updateList;
 
-    public void setClickUpdate(ClickUpdate clickUpdate) {
-        this.clickUpdate = clickUpdate;
+    public void setUpdateList(UpdateList updateList) {
+        this.updateList = updateList;
     }
 
-    ClickUpdate clickUpdate;
-
     @Autowired
-    public AccountTopupWithdraw(AccountRepository accountRepository) {
+    public AccountTopup(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
         amountField = new TextField("Amount");
         executeOperationButton = new Button("Execute");
@@ -54,7 +53,7 @@ public class AccountTopupWithdraw extends VerticalLayout {
             Notification.show("Successfully added " + amountToAdd + " to balance!");
             setVisible(false);
             amountField.clear();
-            clickUpdate.updategrid();
+            updateList.updateList();
         } else {
             Notification.show("Amount must be number and greater than zero!", Notification.Type.ERROR_MESSAGE);
             amountField.clear();
@@ -62,8 +61,8 @@ public class AccountTopupWithdraw extends VerticalLayout {
 
     }
 
-    public interface ClickUpdate{
-        void updategrid();
+    public interface UpdateList {
+        void updateList();
     }
 
     public void enable(Account account){

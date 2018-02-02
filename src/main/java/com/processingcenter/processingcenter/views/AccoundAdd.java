@@ -31,6 +31,11 @@ public class AccoundAdd extends VerticalLayout {
     CssLayout actions = new CssLayout(save, cancel);
 
     Binder<Account> binder = new Binder<>(Account.class);
+    AddClickListener addClickListener;
+
+    public void setAddClickListener(AddClickListener addClickListener) {
+        this.addClickListener = addClickListener;
+    }
 
     @Autowired
     public AccoundAdd(AccountRepository accountRepository) {
@@ -57,8 +62,11 @@ public class AccoundAdd extends VerticalLayout {
             account = new Account(firstName.getValue(), lastName.getValue(), 0);
             accountRepository.save(account);
             account = null;
+            addClickListener.updateList();
             Notification.show("Added new account");
             setVisible(false);
+            firstName.clear();
+            lastName.clear();
         } else {
             Notification.show("Error adding new account, first fill out the form!", Notification.Type.ERROR_MESSAGE);
         }
@@ -73,5 +81,9 @@ public class AccoundAdd extends VerticalLayout {
         firstName.clear();
         lastName.clear();
         Notification.show("Canceled");
+    }
+
+    public interface AddClickListener {
+        void updateList();
     }
 }

@@ -48,10 +48,6 @@ public class PaymentService {
         return false;
     }
 
-    public Integer getBalance(Long id){
-        return accountRepository.findBalanceByAccId(id);
-    }
-
     /**
      * Method for checking if funds are suffucient for making transaction
      * @param fromId

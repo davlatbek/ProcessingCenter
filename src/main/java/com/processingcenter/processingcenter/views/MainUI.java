@@ -25,7 +25,7 @@ import org.springframework.util.StringUtils;
 @SpringUI
 @Theme("valo")
 @EnableTransactionManagement
-public class MainUI extends UI implements AccountTopup.UpdateList, AccountWithdraw.UpdateClickListener {
+public class MainUI extends UI implements AccountTopup.UpdateList, AccountWithdraw.UpdateClickListener, AccoundAdd.AddClickListener {
     public Navigator navigator;
     AccountRepository accountRepository;
     Grid<Account> accountGrid;
@@ -38,13 +38,17 @@ public class MainUI extends UI implements AccountTopup.UpdateList, AccountWithdr
     PaymentService paymentService;
     AccoundAdd accoundAdd;
     AccountTopup accountTopup;
+    AccountWithdraw accountWithdraw;
 
     @Autowired
-    public UpdateClickListener(AccountRepository accountRepository, TransactionRepository transactionRepository, PaymentService paymentService, AccoundAdd accoundAdd, AccountTopup accountTopup) {
+    public MainUI(AccountRepository accountRepository, TransactionRepository transactionRepository, PaymentService paymentService, AccoundAdd accoundAdd, AccountTopup accountTopup, AccountWithdraw accountWithdraw) {
         initViewElements(accountRepository, transactionRepository, paymentService);
         this.accoundAdd = accoundAdd;
         this.accountTopup = accountTopup;
+        this.accountWithdraw = accountWithdraw;
         this.accountTopup.setUpdateList(this);
+        this.accountWithdraw.setClickUpdate(this);
+        this.accoundAdd.setAddClickListener(this);
 
         accountGrid.addComponentColumn(this::buildTopupButton).setCaption("Topup");
         accountGrid.addComponentColumn(this::buildWithdrawButton).setCaption("Withdraw");
@@ -54,8 +58,7 @@ public class MainUI extends UI implements AccountTopup.UpdateList, AccountWithdr
         accountGrid.setWidth(700, Unit.PIXELS);
         HorizontalLayout actionsAcc = new HorizontalLayout(filterByLastName, addNewAccountBtn);
         VerticalLayout accountsWithActions = new VerticalLayout(actionsAcc, accountGrid);
-        HorizontalLayout accountsAll = new HorizontalLayout(accountsWithActions, accoundAdd, accountTopup);
-
+        HorizontalLayout accountsAll = new HorizontalLayout(accountsWithActions, accoundAdd, accountTopup, accountWithdraw);
 
         transactionGrid.setWidth(70, Unit.PERCENTAGE);
         HorizontalLayout actionsTrx = new HorizontalLayout(fromAccount, toAccount, amount, addNewTransactionBtn);
@@ -114,8 +117,12 @@ public class MainUI extends UI implements AccountTopup.UpdateList, AccountWithdr
     private Button buildWithdrawButton(Account ac){
         Button button = new Button(VaadinIcons.MINUS_CIRCLE);
         button.addStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
-        button.addClickListener(e -> accountRepository.save(ac));
+        button.addClickListener(e -> withdrawButtonHandle(ac));
         return button;
+    }
+
+    private void withdrawButtonHandle(Account account){
+        accountWithdraw.enable(account);
     }
 
     private Button buildDeleteButton(Account ac){
