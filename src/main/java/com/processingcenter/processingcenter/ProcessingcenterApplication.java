@@ -29,10 +29,10 @@ public class ProcessingcenterApplication implements CommandLineRunner{
 		accountRepository.save(new Account("Andrey", "Sokolov", 19000));
 		accountRepository.save(new Account("Gael", "Guedia", 150000));
 		accountRepository.save(new Account("Petr", "Petrov", 4100000));
- 		accountRepository.save(new Account("Oskar", "Guera", 31000));
-		accountRepository.save(new Account("Damir", "Mirzanurov", 50000000));
-		accountRepository.save(new Account("Andrey", "Kochemasov", 52000));
-		accountRepository.save(new Account("Petr", "Ivanov", 400));
+// 		accountRepository.save(new Account("Oskar", "Guera", 31000));
+//		accountRepository.save(new Account("Damir", "Mirzanurov", 50000000));
+//		accountRepository.save(new Account("Andrey", "Kochemasov", 52000));
+//		accountRepository.save(new Account("Petr", "Ivanov", 400));
 //		transactionRepository.save(new Transaction(2L, 1L, 1000));
 	}
 }

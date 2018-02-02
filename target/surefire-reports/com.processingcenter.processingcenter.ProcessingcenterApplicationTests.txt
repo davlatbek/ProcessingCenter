@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.processingcenter.processingcenter.ProcessingcenterApplicationTests
--------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 92.264 s - in com.processingcenter.processingcenter.ProcessingcenterApplicationTests
