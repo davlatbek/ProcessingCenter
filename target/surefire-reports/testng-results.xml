@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="4" passed="4">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Surefire suite" duration-ms="88091" started-at="2018-02-02T12:47:40Z" finished-at="2018-02-02T12:49:08Z">
+    <groups>
+    </groups>
+    <test name="Surefire test" duration-ms="88091" started-at="2018-02-02T12:47:40Z" finished-at="2018-02-02T12:49:08Z">
+      <class name="com.processingcenter.processingcenter.ProcessingcenterApplicationTests">
+        <test-method status="PASS" signature="beforeTest()[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="beforeTest" is-config="true" duration-ms="124" started-at="2018-02-02T15:47:40Z" finished-at="2018-02-02T15:47:40Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeTest -->
+        <test-method status="PASS" signature="springTestContextBeforeTestClass()[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="springTestContextBeforeTestClass" is-config="true" duration-ms="13" started-at="2018-02-02T15:47:40Z" finished-at="2018-02-02T15:47:40Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- springTestContextBeforeTestClass -->
+        <test-method status="PASS" signature="springTestContextPrepareTestInstance()[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="springTestContextPrepareTestInstance" is-config="true" duration-ms="77655" started-at="2018-02-02T15:47:40Z" depends-on-methods="org.springframework.test.context.testng.AbstractTestNGSpringContextTests.springTestContextBeforeTestClass" finished-at="2018-02-02T15:48:58Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- springTestContextPrepareTestInstance -->
+        <test-method status="PASS" signature="springTestContextBeforeTestMethod(java.lang.reflect.Method)[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="springTestContextBeforeTestMethod" is-config="true" duration-ms="5" started-at="2018-02-02T15:48:58Z" finished-at="2018-02-02T15:48:58Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void com.processingcenter.processingcenter.ProcessingcenterApplicationTests.accountDeleteTest()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- springTestContextBeforeTestMethod -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="beforeMethod" is-config="true" duration-ms="0" started-at="2018-02-02T15:48:58Z" finished-at="2018-02-02T15:48:58Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="accountDeleteTest()[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="accountDeleteTest" duration-ms="2673" started-at="2018-02-02T15:48:58Z" description="Test that checks deletion of existing account from database" finished-at="2018-02-02T15:49:00Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- accountDeleteTest -->
+        <test-method status="PASS" signature="springTestContextAfterTestMethod(java.lang.reflect.Method)[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="springTestContextAfterTestMethod" is-config="true" duration-ms="1" started-at="2018-02-02T15:49:00Z" finished-at="2018-02-02T15:49:00Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void com.processingcenter.processingcenter.ProcessingcenterApplicationTests.accountDeleteTest()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- springTestContextAfterTestMethod -->
+        <test-method status="PASS" signature="springTestContextBeforeTestMethod(java.lang.reflect.Method)[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="springTestContextBeforeTestMethod" is-config="true" duration-ms="2" started-at="2018-02-02T15:49:00Z" finished-at="2018-02-02T15:49:00Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void com.processingcenter.processingcenter.ProcessingcenterApplicationTests.addAccountTest()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- springTestContextBeforeTestMethod -->
+        <test-method status="PASS" signature="addAccountTest()[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="addAccountTest" duration-ms="754" started-at="2018-02-02T15:49:00Z" description="Test that checks addition of new account to database" finished-at="2018-02-02T15:49:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- addAccountTest -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="beforeMethod" is-config="true" duration-ms="0" started-at="2018-02-02T15:49:00Z" finished-at="2018-02-02T15:49:00Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="springTestContextAfterTestMethod(java.lang.reflect.Method)[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="springTestContextAfterTestMethod" is-config="true" duration-ms="1" started-at="2018-02-02T15:49:01Z" finished-at="2018-02-02T15:49:01Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void com.processingcenter.processingcenter.ProcessingcenterApplicationTests.addAccountTest()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- springTestContextAfterTestMethod -->
+        <test-method status="PASS" signature="springTestContextBeforeTestMethod(java.lang.reflect.Method)[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="springTestContextBeforeTestMethod" is-config="true" duration-ms="2" started-at="2018-02-02T15:49:01Z" finished-at="2018-02-02T15:49:01Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void com.processingcenter.processingcenter.ProcessingcenterApplicationTests.paymentWithInsuffiecientFundsAccountTest()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- springTestContextBeforeTestMethod -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="beforeMethod" is-config="true" duration-ms="1" started-at="2018-02-02T15:49:01Z" finished-at="2018-02-02T15:49:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="paymentWithInsuffiecientFundsAccountTest()[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="paymentWithInsuffiecientFundsAccountTest" duration-ms="2116" started-at="2018-02-02T15:49:01Z" description="Test that checks money transfer from one to another account balance with insufficient funds" finished-at="2018-02-02T15:49:03Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- paymentWithInsuffiecientFundsAccountTest -->
+        <test-method status="PASS" signature="springTestContextAfterTestMethod(java.lang.reflect.Method)[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="springTestContextAfterTestMethod" is-config="true" duration-ms="1" started-at="2018-02-02T15:49:03Z" finished-at="2018-02-02T15:49:03Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void com.processingcenter.processingcenter.ProcessingcenterApplicationTests.paymentWithInsuffiecientFundsAccountTest()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- springTestContextAfterTestMethod -->
+        <test-method status="PASS" signature="springTestContextBeforeTestMethod(java.lang.reflect.Method)[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="springTestContextBeforeTestMethod" is-config="true" duration-ms="2" started-at="2018-02-02T15:49:03Z" finished-at="2018-02-02T15:49:03Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void com.processingcenter.processingcenter.ProcessingcenterApplicationTests.paymentWithSufficientFundsAccountTest()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- springTestContextBeforeTestMethod -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="beforeMethod" is-config="true" duration-ms="0" started-at="2018-02-02T15:49:03Z" finished-at="2018-02-02T15:49:03Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="paymentWithSufficientFundsAccountTest()[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="paymentWithSufficientFundsAccountTest" duration-ms="4371" started-at="2018-02-02T15:49:03Z" description="Test that checks money transfer from one to another account balance with sufficient funds" finished-at="2018-02-02T15:49:08Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- paymentWithSufficientFundsAccountTest -->
+        <test-method status="PASS" signature="springTestContextAfterTestMethod(java.lang.reflect.Method)[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="springTestContextAfterTestMethod" is-config="true" duration-ms="1" started-at="2018-02-02T15:49:08Z" finished-at="2018-02-02T15:49:08Z">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void com.processingcenter.processingcenter.ProcessingcenterApplicationTests.paymentWithSufficientFundsAccountTest()]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- springTestContextAfterTestMethod -->
+        <test-method status="PASS" signature="springTestContextAfterTestClass()[pri:0, instance:com.processingcenter.processingcenter.ProcessingcenterApplicationTests@514cd540]" name="springTestContextAfterTestClass" is-config="true" duration-ms="1" started-at="2018-02-02T15:49:08Z" finished-at="2018-02-02T15:49:08Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- springTestContextAfterTestClass -->
+      </class> <!-- com.processingcenter.processingcenter.ProcessingcenterApplicationTests -->
+    </test> <!-- Surefire test -->
+  </suite> <!-- Surefire suite -->
+</testng-results>
