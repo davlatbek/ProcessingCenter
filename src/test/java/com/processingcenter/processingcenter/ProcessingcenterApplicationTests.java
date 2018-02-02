@@ -64,6 +64,8 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
     }
 
 	@Test(description = "Test that checks addition of new account to database")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Add new account test")
 	public void addAccountTest() {
 
 		//create account and check if they are added
@@ -77,7 +79,7 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
 
 	@Test(description = "Test that checks deletion of existing account from database")
     @Severity(SeverityLevel.BLOCKER)
-    @Story("Add new account test")
+    @Story("Delete account test")
 	public void accountDeleteTest(){
 
         //create two new users and save them to db
@@ -98,6 +100,8 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
 	}
 
 	@Test(description = "Test that checks money transfer from one to another account balance with sufficient funds")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Payment with sufficient balance test")
 	public void paymentWithSufficientFundsAccountTest(){
 
         //create two new users and save them to db
@@ -116,6 +120,8 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
 	}
 
 	@Test(description = "Test that checks money transfer from one to another account balance with insufficient funds")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Payment with insufficient balance test")
 	public void paymentWithInsuffiecientFundsAccountTest(){
 
         //create two new users and save them to db

@@ -5,6 +5,7 @@ package com.processingcenter.processingcenter.config;
  */
 public class Configuration
 {
+    public static final String PATH_GECKO_DRIVER = "/Users/davlatbek/Downloads/geckodriver";
     public static final String URL = "http://serene-crag-29058.herokuapp.com/";
     public static final String RESOURCE_PARAMS = "src/test/resources/";
 }
