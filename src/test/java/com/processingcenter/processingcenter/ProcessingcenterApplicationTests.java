@@ -5,6 +5,9 @@ import com.processingcenter.processingcenter.entity.Account;
 import com.processingcenter.processingcenter.repositories.AccountRepository;
 import com.processingcenter.processingcenter.repositories.TransactionRepository;
 import com.processingcenter.processingcenter.services.PaymentService;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -60,7 +63,7 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
         paymentService.setTransactionRepository(this.transactionRepository);
     }
 
-	@Test
+	@Test(description = "Test that checks addition of new account to database")
 	public void addAccountTest() {
 
 		//create account and check if they are added
@@ -72,7 +75,9 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
         Assert.assertEquals(account1, addedAccount);
 	}
 
-	@Test
+	@Test(description = "Test that checks deletion of existing account from database")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Add new account test")
 	public void accountDeleteTest(){
 
         //create two new users and save them to db
@@ -92,7 +97,7 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
 		Assert.assertNull(deletedAccount);
 	}
 
-	@Test
+	@Test(description = "Test that checks money transfer from one to another account balance with sufficient funds")
 	public void paymentWithSufficientFundsAccountTest(){
 
         //create two new users and save them to db
@@ -110,7 +115,7 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
         Assert.assertEquals((int)accountRepository.findByAccId(userid2).getBalance(), 2000);
 	}
 
-	@Test
+	@Test(description = "Test that checks money transfer from one to another account balance with insufficient funds")
 	public void paymentWithInsuffiecientFundsAccountTest(){
 
         //create two new users and save them to db
