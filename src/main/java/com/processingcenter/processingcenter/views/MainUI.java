@@ -56,11 +56,13 @@ public class MainUI extends UI implements AccountTopup.UpdateList, AccountWithdr
 //        accountGrid.addComponentColumn(this::buildShowBalanceButton).setCaption("Balance");
 
         accountGrid.setWidth(700, Unit.PIXELS);
+        accountGrid.setHeight(800, Unit.PIXELS);
         HorizontalLayout actionsAcc = new HorizontalLayout(filterByLastName, addNewAccountBtn);
         VerticalLayout accountsWithActions = new VerticalLayout(actionsAcc, accountGrid);
         HorizontalLayout accountsAll = new HorizontalLayout(accountsWithActions, accoundAdd, accountTopup, accountWithdraw);
 
         transactionGrid.setWidth(70, Unit.PERCENTAGE);
+        transactionGrid.setHeight(1000, Unit.PIXELS);
         HorizontalLayout actionsTrx = new HorizontalLayout(fromAccount, toAccount, amount, addNewTransactionBtn);
         VerticalLayout transactionsWithActions = new VerticalLayout(actionsTrx, transactionGrid);
 

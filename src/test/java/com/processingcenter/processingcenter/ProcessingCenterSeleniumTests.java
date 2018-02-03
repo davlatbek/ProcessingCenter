@@ -80,7 +80,6 @@ public class ProcessingCenterSeleniumTests {
         actions.moveToElement(buttonSave).click().build().perform();
 
         //wait some time for appearing of newly added data in new row
-        System.out.println("asdfasfd" + rowCollections.size());
         WebElement lastRow = (new WebDriverWait(driver, 3))
                 .until(ExpectedConditions
                         .presenceOfElementLocated(
@@ -104,8 +103,8 @@ public class ProcessingCenterSeleniumTests {
 
         //locate delete button and press
         WebElement deleteButton = rowCollections.get(rowCollections.size()-1).findElement(By.xpath("td[7]"));
-        deleteButton.click();
-        Thread.sleep(2000);
+        actions.moveToElement(deleteButton).click().build().perform();
+        Thread.sleep(3000);
 
         //check if deleted account removed from table
         List<WebElement> rowCollectionsAfterDeletion = tableAccounts
@@ -136,7 +135,7 @@ public class ProcessingCenterSeleniumTests {
         to_id.sendKeys("2");
         amount.sendKeys("1");
         buttonAddNewTransaction.get(1).click();
-        Thread.sleep(2000);
+        Thread.sleep(5000);
 
         //assert
         WebElement tableAccountsAfter = driver.findElement(By.xpath(xpath_transactions_table));
@@ -150,6 +149,7 @@ public class ProcessingCenterSeleniumTests {
                 .findElement(By.xpath("td[3]")).getText();
         String newAmount = rowCollectionsAfter.get(rowCollectionsAfter.size() - 1)
                 .findElement(By.xpath("td[4]")).getText();
+        System.out.println("lastid      " + lastId + "  newid       " + newId);
         Assert.assertNotEquals(lastId, newId);
         Assert.assertEquals("1", newFromId);
         Assert.assertEquals("2", newToId);
@@ -163,11 +163,8 @@ public class ProcessingCenterSeleniumTests {
         //get 2 accounts to send from and to send to from table in the end
         WebElement tableAccounts = driver.findElement(By.xpath(xpath_account_table));
         List<WebElement> rowAccountsCollections = tableAccounts.findElements(By.xpath(xpath_account_table_rows));
-        String idFromAccount = rowAccountsCollections.get(rowAccountsCollections.size() - 1)
-                .findElement(By.xpath("td[1]")).getText();
-        Integer balanceFromAccount
-                = Integer.valueOf(rowAccountsCollections.get(rowAccountsCollections.size() - 1)
-                .findElement(By.xpath("td[4]")).getText());
+        String idFromAccount = rowAccountsCollections.get(rowAccountsCollections.size() - 1).findElement(By.xpath("td[1]")).getText();
+        Integer balanceFromAccount = Integer.valueOf(rowAccountsCollections.get(rowAccountsCollections.size() - 1).findElement(By.xpath("td[4]")).getText());
         String idToAccount = rowAccountsCollections.get(rowAccountsCollections.size() - 2)
                 .findElement(By.xpath("td[1]")).getText();
 
