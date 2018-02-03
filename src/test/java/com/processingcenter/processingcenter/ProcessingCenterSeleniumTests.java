@@ -53,7 +53,7 @@ public class ProcessingCenterSeleniumTests {
         System.setProperty("webdriver.chrome.driver", Configuration.PATH_CHROME_DRIVER);
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(15, SECONDS);
-        driver.get(Configuration.LOCALHOST);
+        driver.get(Configuration.URL);
         actions = new Actions(driver);
     }
 
@@ -193,18 +193,6 @@ public class ProcessingCenterSeleniumTests {
         Integer transactionsCountAfter = rowTransactionsAfter.size();
         Assert.assertEquals(transactionsCountAfter, transactionsCount);
     }
-
-//    @Test(priority = 0, description = "Topup the balance of an account by amount of money test")
-//    @Severity(SeverityLevel.BLOCKER)
-//    public void topupBalanceTest(){
-//
-//    }
-//
-//    @Test(priority = 0, description = "Withdraw from balance of an account by amount of money test")
-//    @Severity(SeverityLevel.BLOCKER)
-//    public void withdrawBalanceTest(){
-//
-//    }
 
     @AfterTest(description = "Quit driver after test")
     public static void tearDown() {
