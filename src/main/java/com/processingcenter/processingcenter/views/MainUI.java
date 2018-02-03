@@ -53,7 +53,7 @@ public class MainUI extends UI implements AccountTopup.UpdateList, AccountWithdr
         accountGrid.addComponentColumn(this::buildTopupButton).setCaption("Topup");
         accountGrid.addComponentColumn(this::buildWithdrawButton).setCaption("Withdraw");
         accountGrid.addComponentColumn(this::buildDeleteButton).setCaption("Delete");
-        accountGrid.addComponentColumn(this::buildShowBalanceButton).setCaption("Balance");
+//        accountGrid.addComponentColumn(this::buildShowBalanceButton).setCaption("Balance");
 
         accountGrid.setWidth(700, Unit.PIXELS);
         HorizontalLayout actionsAcc = new HorizontalLayout(filterByLastName, addNewAccountBtn);
@@ -90,7 +90,7 @@ public class MainUI extends UI implements AccountTopup.UpdateList, AccountWithdr
         this.amount = new TextField();
         this.title = new Label("PROCESSING CENTER");
         filterByLastName.addValueChangeListener(x -> listAccounts(x.getValue()));
-        accountGrid.setColumns("accId", "firstName", "lastName");
+        accountGrid.setColumns("accId", "firstName", "lastName", "balance");
         transactionGrid.setColumns("trxId", "from_id", "to_id", "amount");
         addNewTransactionBtn.addClickListener(x -> addNewTransaction(fromAccount.getValue(), toAccount.getValue(), amount.getValue()));
         addNewAccountBtn.addClickListener(x -> accoundAdd.editAccount(new Account("", "", 0)));
@@ -136,6 +136,7 @@ public class MainUI extends UI implements AccountTopup.UpdateList, AccountWithdr
         accountRepository.delete(account);
         Notification.show("Deleted account with id = " + account.getAccId(), Notification.Type.HUMANIZED_MESSAGE);
         listAccounts(null);
+        accountGrid.sort("accId");
     }
 
     private Button buildShowBalanceButton(Account account){
@@ -150,10 +151,14 @@ public class MainUI extends UI implements AccountTopup.UpdateList, AccountWithdr
     }
 
     private void listAccounts(String filter){
-        if (StringUtils.isEmpty(filter))
+        if (StringUtils.isEmpty(filter)){
             accountGrid.setItems(accountRepository.findAll());
-        else
+            accountGrid.sort("accId");
+        }
+        else{
             accountGrid.setItems(accountRepository.findAllByLastNameStartsWithIgnoreCase(filter));
+            accountGrid.sort("accId");
+        }
     }
 
     private void listTransactions(){
@@ -175,7 +180,7 @@ public class MainUI extends UI implements AccountTopup.UpdateList, AccountWithdr
             amount.clear();
             Notification.show("Transaction succeed! Transferred " + amountOfMoney + " from id " + fromid + " to id " + toid + "!", Notification.Type.HUMANIZED_MESSAGE);
         } else {
-            Notification.show("Transaction failed! Insufficient funds on balance of account with id = " + fromid + "!", Notification.Type.ERROR_MESSAGE);
+            Notification.show("Transaction failed! Insufficient funds on balance of account with id = " + fromid + "!", Notification.Type.HUMANIZED_MESSAGE);
         }
 
     }
@@ -183,5 +188,6 @@ public class MainUI extends UI implements AccountTopup.UpdateList, AccountWithdr
     @Override
     public void updateList() {
         listAccounts(null);
+        accountGrid.sort("accId");
     }
 }

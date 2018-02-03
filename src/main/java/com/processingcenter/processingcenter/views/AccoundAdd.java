@@ -39,6 +39,10 @@ public class AccoundAdd extends VerticalLayout {
 
     @Autowired
     public AccoundAdd(AccountRepository accountRepository) {
+
+        firstName.setPlaceholder("first name");
+        lastName.setPlaceholder("last name");
+
         this.accountRepository = accountRepository;
         addComponents(firstName, lastName, actions);
 

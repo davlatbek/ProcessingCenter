@@ -5,9 +5,7 @@ import com.processingcenter.processingcenter.entity.Account;
 import com.processingcenter.processingcenter.repositories.AccountRepository;
 import com.processingcenter.processingcenter.repositories.TransactionRepository;
 import com.processingcenter.processingcenter.services.PaymentService;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,6 +26,8 @@ import org.testng.annotations.Test;
 @SpringBootTest
 @EnableTransactionManagement
 @EnableWebMvc
+@Epic("Fuctional Tests")
+@Feature("Processing center functional tests")
 public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContextTests {
 
 	@Autowired
@@ -49,11 +49,18 @@ public class ProcessingcenterApplicationTests extends AbstractTestNGSpringContex
 
 	@BeforeTest
 	public void beforeTest() {
-		dataSource = new BasicDataSource();
-		dataSource.setDriverClassName("org.postgresql.Driver");
-		dataSource.setUrl("jdbc:postgresql://localhost:5432/pcdb");
-		dataSource.setUsername("postgres");
-		dataSource.setPassword("1");
+//		dataSource = new BasicDataSource();
+//		dataSource.setDriverClassName("org.postgresql.Driver");
+//		dataSource.setUrl("jdbc:postgresql://localhost:5432/pcdb");
+//		dataSource.setUsername("postgres");
+//		dataSource.setPassword("1");
+
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName("org.postgresql.Driver");
+        dataSource.setUrl("jdbc:postgresql://ec2-23-23-92-179.compute-1.amazonaws.com:5432/d1ub4mtsogjkac?sslmode=require");
+        dataSource.setUsername("nanvkhyttqqhrx");
+        dataSource.setPassword("5c3b598b8dff2061d9a497e71294e5c572ef72203e14d8dc8d129da898ee88ac");
+
 		paymentService = new PaymentService();
 	}
 
