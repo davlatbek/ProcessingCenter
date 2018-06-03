@@ -26,17 +26,17 @@ import javax.sql.DataSource;
 public class AppConfiguration extends WebMvcConfigurerAdapter{
     @Bean
     DataSource dataSource() {
-//        BasicDataSource dataSource = new BasicDataSource();
-//        dataSource.setDriverClassName("org.postgresql.Driver");
-//        dataSource.setUrl("jdbc:postgresql://localhost:5432/pcdb");
-//        dataSource.setUsername("postgres");
-//        dataSource.setPassword("1");
-
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://ec2-23-23-92-179.compute-1.amazonaws.com:5432/d1ub4mtsogjkac?sslmode=require");
-        dataSource.setUsername("nanvkhyttqqhrx");
-        dataSource.setPassword("5c3b598b8dff2061d9a497e71294e5c572ef72203e14d8dc8d129da898ee88ac");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/pcdb");
+        dataSource.setUsername("postgres");
+        dataSource.setPassword("1");
+
+//        BasicDataSource dataSource = new BasicDataSource();
+//        dataSource.setDriverClassName("org.postgresql.Driver");
+//        dataSource.setUrl("jdbc:postgresql://ec2-23-23-92-179.compute-1.amazonaws.com:5432/d1ub4mtsogjkac?sslmode=require");
+//        dataSource.setUsername("nanvkhyttqqhrx");
+//        dataSource.setPassword("5c3b598b8dff2061d9a497e71294e5c572ef72203e14d8dc8d129da898ee88ac");
 
         return dataSource;
     }
